@@ -65,6 +65,7 @@ const NewProduct = () => {
               <input
                 type="text"
                 placeholder="eg. laptop, camera etc"
+                // placeholder="eg. rotavator, harrow, seeder etc"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />

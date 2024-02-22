@@ -7,7 +7,7 @@ export const connectDB = async () => {
         return;
     }
     try {
-        const mongodbUri = "mongodb+srv://07advaita:3u8FyD68SFPtd2FY@cluster0.1hxm7sv.mongodb.net/?retryWrites=true&w=majority";
+        const mongodbUri = "mongodb+srv://07advaita:bqcde2w6Cg9UY7H8@cluster0.1hxm7sv.mongodb.net/?retryWrites=true&w=majority";
         if (!mongodbUri) {
             throw new Error("MONGODB_URI is not defined");
         }

@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
         required: [true, "Please enter email"],
         validator: validator.default.isEmail,
     },
-    _photo: {
+    photo: {
         type: String,
         required: [true, "Please add Photo"],
     },
@@ -31,7 +31,6 @@ const schema = new mongoose.Schema({
     },
     dob: {
         type: Date,
-        enum: ["male", "female"],
         required: [true, "Please enter Date of birth"],
     },
 }, {

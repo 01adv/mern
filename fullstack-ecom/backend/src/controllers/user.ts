@@ -1,33 +1,79 @@
 import { Request, Response, NextFunction } from "express";
 import { User } from "../models/user.js";
 import { NewUserRequestBody } from "../types/types.js";
+import { TryCatch } from "../middlewares/error.js";
+import ErrorHandler from "../utils/utility-class.js";
 
-export const newUser = async (
-  req: Request<{}, {}, NewUserRequestBody>,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { name, email, photo, gender, role, _id, dob } = req.body;
+export const newUser = TryCatch(
+  async (
+    req: Request<{}, {}, NewUserRequestBody>,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const { name, email, photo, gender, _id, dob } = req.body;
 
-    const user = await User.create({
+    let user = await User.findById(_id);
+
+    if (user)
+      return res.status(200).json({
+        success: true,
+        message: `Welcome, ${user.name}`,
+      });
+
+    if (!name || !email || !photo || !gender || !_id || !dob) {
+      return next(new ErrorHandler("Please add all fields", 400));
+    }
+
+    user = await User.create({
       name,
       email,
       photo,
       gender,
-      role,
       _id,
-      dob,
+      dob: new Date(dob),
     });
+    console.log(name, email, photo, gender, _id, dob);
 
-    return res.status(200).json({
+    return res.status(201).json({
       success: true,
       message: `Welcome, ${user.name}`,
     });
-  } catch (error) {
-    return res.status(200).json({
-      success: true,
-      message: error,
-    });
   }
-};
+);
+
+export const getAllUsers = TryCatch(async (req, res, next) => {
+  const users = await User.find({});
+
+  return res.status(200).json({
+    success: true,
+    users,
+  });
+});
+
+export const getUser = TryCatch(async (req, res, next) => {
+  const id = req.params.id;
+  console.log("Requested User ID:", id); // Log the received ID
+  const user = await User.findById(id);
+
+  if (!user) return next(new ErrorHandler("Invalid ID", 400));
+  console.log("User not found for ID:", id); // Log if user not found
+
+  return res.status(200).json({
+    success: true,
+    user,
+  });
+});
+
+export const deleteUser = TryCatch(async (req, res, next) => {
+  const id = req.params.id;
+  const user = await User.findById(id);
+
+  if (!user) return next(new ErrorHandler("Invalid ID", 400));
+
+  await user.deleteOne();
+
+  return res.status(200).json({
+    success: true,
+    message: "user deleted successfully"
+  });
+});
