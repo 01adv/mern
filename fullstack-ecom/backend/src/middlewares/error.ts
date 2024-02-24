@@ -24,4 +24,4 @@ export const TryCatch =
     return Promise.resolve(func(req, res, next)).catch((next));
   };
 
-// const a = TryCatch();
+
