@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { myCache } from "../app.js";
+import { Product } from "../models/product.js";
 let isConnected = false; // track the connection
 export const connectDB = async () => {
     mongoose.set("strictQuery", true);
@@ -19,5 +21,24 @@ export const connectDB = async () => {
     }
     catch (error) {
         console.log(error);
+    }
+};
+export const invalidateCache = async ({ product, order, admin, }) => {
+    if (product) {
+        const productKeys = [
+            "latest-product",
+            "categories",
+            "all-products",
+        ];
+        // product-${id}
+        const products = await Product.find({}).select("_id");
+        products.forEach((i) => {
+            productKeys.push(`product-${i._id}`);
+        });
+        myCache.del(productKeys);
+    }
+    if (order) {
+    }
+    if (admin) {
     }
 };
