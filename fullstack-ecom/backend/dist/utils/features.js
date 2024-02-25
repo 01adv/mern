@@ -2,18 +2,17 @@ import mongoose from "mongoose";
 import { myCache } from "../app.js";
 import { Product } from "../models/product.js";
 let isConnected = false; // track the connection
-export const connectDB = async () => {
+export const connectDB = async (uri) => {
     mongoose.set("strictQuery", true);
     if (isConnected) {
         console.log("MongoDB is already connected");
         return;
     }
     try {
-        const mongodbUri = "mongodb+srv://07advaita:bqcde2w6Cg9UY7H8@cluster0.1hxm7sv.mongodb.net/?retryWrites=true&w=majority";
-        if (!mongodbUri) {
+        if (!uri) {
             throw new Error("MONGODB_URI is not defined");
         }
-        await mongoose.connect(mongodbUri, {
+        await mongoose.connect(uri, {
             dbName: "ecom-6pack",
         });
         isConnected = true;

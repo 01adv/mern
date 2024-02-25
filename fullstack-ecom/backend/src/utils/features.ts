@@ -5,7 +5,7 @@ import { Product } from "../models/product.js";
 
 let isConnected = false; // track the connection
 
-export const connectDB = async () => {
+export const connectDB = async (uri:string) => {
   mongoose.set("strictQuery", true);
 
   if (isConnected) {
@@ -14,14 +14,11 @@ export const connectDB = async () => {
   }
 
   try {
-    const mongodbUri =
-      "mongodb+srv://07advaita:bqcde2w6Cg9UY7H8@cluster0.1hxm7sv.mongodb.net/?retryWrites=true&w=majority";
-
-    if (!mongodbUri) {
+    if (!uri) {
       throw new Error("MONGODB_URI is not defined");
     }
 
-    await mongoose.connect(mongodbUri, {
+    await mongoose.connect(uri, {
       dbName: "ecom-6pack",
     });
 
