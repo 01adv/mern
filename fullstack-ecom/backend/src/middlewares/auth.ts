@@ -10,7 +10,7 @@ export const adminOnly = TryCatch(async (req, res, next) => {
 
   const user = await User.findById(id);
   if (!user) return next(new ErrorHandler("fake id", 401));
-  if (user.role !== "admin") return next(new ErrorHandler("u are not an admin", 401));
+  if (user.role !== "admin") return next(new ErrorHandler("u are not an admin", 403));
 
   next();
 });
