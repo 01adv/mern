@@ -3,7 +3,7 @@ import { FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser } from "reac
 import { Link } from "react-router-dom";
 import Login from "../pages/login";
 
-const user = { _id: "ldsjf", role: "admin" }
+const user = { _id: "", role: "" }
 
 const Header = () => {
 
