@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaSearch, FaShoppingBag, FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Login from "../pages/login";
+import { User } from "../types/types";
 
-const user = { _id: "", role: "" }
+// const user = { _id: "", role: "" }
 
-const Header = () => {
+interface PropsType {
+    user: User | null
+}
+
+const Header = ({user}:PropsType) => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false)
 
