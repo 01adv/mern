@@ -10,9 +10,8 @@ import ErrorHandler from "../utils/utility-class.js";
 import { rm } from "fs";
 import { myCache } from "../app.js";
 import { invalidateCache } from "../utils/features.js";
+import { error } from "console";
 // import {faker} from '@faker-js/faker'
-
-
 
 // revalidate a new, update, delete product & on new order
 export const getLatestProducts = TryCatch(async (req, res, next) => {
@@ -24,7 +23,7 @@ export const getLatestProducts = TryCatch(async (req, res, next) => {
     products = await Product.find({}).sort({ createdAt: -1 }).limit(5);
     myCache.set("latest-product", JSON.stringify(products));
   }
-
+  
   return res.status(201).json({
     success: true,
     products,
@@ -84,9 +83,6 @@ export const getSingleProduct = TryCatch(async (req, res, next) => {
   });
 });
 
-
-
-
 export const newProduct = TryCatch(
   async (req: Request<{}, {}, NewProductRequestBody>, res, next) => {
     const { name, price, stock, category } = req.body;
@@ -110,7 +106,7 @@ export const newProduct = TryCatch(
       photo: photo.path,
     });
 
-    await invalidateCache({product:true})
+    await invalidateCache({ product: true });
 
     return res.status(201).json({
       success: true,
@@ -118,8 +114,6 @@ export const newProduct = TryCatch(
     });
   }
 );
-
-
 
 export const updateProduct = TryCatch(async (req, res, next) => {
   const { id } = req.params;
@@ -145,7 +139,7 @@ export const updateProduct = TryCatch(async (req, res, next) => {
 
   await product.save();
 
-  await invalidateCache({product:true, productId:String(product._id)})
+  await invalidateCache({ product: true, productId: String(product._id) });
 
   return res.status(200).json({
     success: true,
@@ -162,7 +156,7 @@ export const deleteProduct = TryCatch(async (req, res, next) => {
 
   await Product.deleteOne();
 
-  await invalidateCache({product:true , productId:String(product._id)})
+  await invalidateCache({ product: true, productId: String(product._id) });
 
   return res.status(201).json({
     success: true,
