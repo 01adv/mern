@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { Skeleton } from "../components/loader";
 import ProductCard from "../components/product-card";
 import {
   useCategoriesQuery,
   useSearchProductsQuery,
 } from "../redux/api/productAPI";
-import toast from "react-hot-toast";
 import { CustomError } from "../types/api-types";
-import { Skeleton } from "../components/loader";
 
 const Search = () => {
   const {
@@ -18,7 +18,7 @@ const Search = () => {
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
-  const [maxPrice, setMaxPrice] = useState(100000);
+  const [maxPrice, setMaxPrice] = useState(600000);
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
@@ -41,8 +41,8 @@ const Search = () => {
   const isPrevPage = page > 1;
   const isNextPage = page < 4;
 
-  // if (isError) toast.error((error as CustomError).data.message);
-  if (productIsError) toast.error((error as CustomError).data.message);
+  if (isError) toast.error((error as CustomError).data.message);
+  if (productIsError) toast.error((productError as CustomError).data.message);
 
   return (
     <div className="product-search-page">
