@@ -7,6 +7,9 @@ import {
   useSearchProductsQuery,
 } from "../redux/api/productAPI";
 import { CustomError } from "../types/api-types";
+import { CartItem } from "../types/types";
+import { addToCart } from "../redux/reducer/cartReducer";
+import { useDispatch } from "react-redux";
 
 const Search = () => {
   const {
@@ -36,8 +39,13 @@ const Search = () => {
   });
   console.log(searchData);
 
-  const addtoCartHandler = () => {};
+  const dispatch = useDispatch();
 
+  const addtoCartHandler = (cartItem: CartItem) => {
+    if (cartItem.stock < 1) return toast.error("Out of stock");
+    dispatch(addToCart(cartItem));
+    toast.success("Added to cart");
+  };
   const isPrevPage = page > 1;
   const isNextPage = page < 4;
 
@@ -104,7 +112,7 @@ const Search = () => {
                 name={i.name}
                 price={i.price}
                 stock={i.stock}
-                photoUrl={i.photo}
+                photo={i.photo}
                 handler={addtoCartHandler}
               />
             ))}
